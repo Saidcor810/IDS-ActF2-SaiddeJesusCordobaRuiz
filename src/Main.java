@@ -1,115 +1,114 @@
-// Clase base: Empleado
-class Empleado {
-    // Atributos
-    private final String nombre;
-    private final int edad;
-    private double salario;
+// Clase abstracta Producto
+abstract class Producto {
+    // Atributos comunes
+    protected String nombre;
+    protected double precio;
 
     // Constructor
-    public Empleado(String nombre, int edad, double salario) {
+    public Producto(String nombre, double precio) {
         this.nombre = nombre;
-        this.edad = edad;
-        this.salario = salario;
+        this.precio = precio;
     }
 
-    // Método para mostrar información del empleado
-    public void mostrarInformacion() {
-        System.out.println("Nombre: " + nombre);
-        System.out.println("Edad: " + edad);
-        System.out.println("Salario: $" + salario);
-    }
+    // Método abstracto para calcular el precio
+    public abstract double calcularPrecio();
 
-    // Método para aumentar el salario
-    public void aumentarSalario(double porcentaje) {
-        this.salario += this.salario * (porcentaje / 100);
-        System.out.println("Nuevo salario de " + nombre + ": $" + salario);
-    }
-
-    // Getter para el nombre
-    public String getNombre() {
-        return nombre;
-    }
-
-    // Getter para el salario
-    public double getSalario() {
-        return salario;
-    }
+    // Método abstracto para mostrar detalles
+    public abstract void mostrarDetalles();
 }
-
-// Clase derivada: Gerente
-class Gerente extends Empleado {
-    // Atributo único de Gerente
-    private String departamento;
+// Subclase Electrónico
+class Electronico extends Producto {
+    // Atributo específico
+    private final int garantia; // Garantía en meses
 
     // Constructor
-    public Gerente(String nombre, int edad, double salario, String departamento) {
-        // Llama al constructor de la clase base (Empleado)
-        super(nombre, edad, salario);
-        this.departamento = departamento;
+    public Electronico(String nombre, double precio, int garantia) {
+        super(nombre, precio);
+        this.garantia = garantia;
     }
 
-    // Método único de Gerente
-    public void gestionarProyecto() {
-        System.out.println("El gerente " + getNombre() + " esta gestionando un proyecto en el departamento de " + departamento);
-    }
-
-    // Sobrescribir el método mostrarInformacion para incluir el departamento
+    // Implementación del método calcularPrecio
     @Override
-    public void mostrarInformacion() {
-        super.mostrarInformacion(); // Llama al método de la clase base
-        System.out.println("Departamento: " + departamento);
+    public double calcularPrecio() {
+        // Aplicar un impuesto del 10% para productos electrónicos
+        return precio * 1.10;
+    }
+
+    // Implementación del método mostrarDetalles
+    @Override
+    public void mostrarDetalles() {
+        System.out.println("Producto Electronico: " + nombre);
+        System.out.println("Precio base: $" + precio);
+        System.out.println("Precio con impuesto: $" + calcularPrecio());
+        System.out.println("Garantia: " + garantia + " meses");
     }
 }
-
-// Clase derivada: Desarrollador
-class Desarrollador extends Empleado {
-    // Atributo único de Desarrollador
-    private final String lenguaje;
+// Subclase Alimento
+class Alimento extends Producto {
+    // Atributo específico
+    private final String caducidad; // Fecha de caducidad
 
     // Constructor
-    public Desarrollador(String nombre, int edad, double salario, String lenguaje) {
-        // Llama al constructor de la clase base (Empleado)
-        super(nombre, edad, salario);
-        this.lenguaje = lenguaje;
+    public Alimento(String nombre, double precio, String caducidad) {
+        super(nombre, precio);
+        this.caducidad = caducidad;
     }
 
-    // Método único de Desarrollador
-    public void escribirCodigo() {
-        System.out.println("El desarrollador " + getNombre() + " esta escribiendo codigo en " + lenguaje);
-    }
-
-    // Sobrescribir el método mostrarInformacion para incluir el lenguaje
+    // Implementación del método calcularPrecio
     @Override
-    public void mostrarInformacion() {
-        super.mostrarInformacion(); // Llama al método de la clase base
-        System.out.println("Lenguaje de programacion: " + lenguaje);
+    public double calcularPrecio() {
+        // No se aplica impuesto a los alimentos
+        return precio;
+    }
+
+    // Implementación del método mostrarDetalles
+    @Override
+    public void mostrarDetalles() {
+        System.out.println("Producto Alimento: " + nombre);
+        System.out.println("Precio: $" + precio);
+        System.out.println("Fecha de caducidad: " + caducidad);
     }
 }
+// Subclase Ropa
+class Ropa extends Producto {
+    // Atributo específico
+    private final String talla; // Talla de la ropa
 
-// Clase principal para ejecutar el programa
+    // Constructor
+    public Ropa(String nombre, double precio, String talla) {
+        super(nombre, precio);
+        this.talla = talla;
+    }
+
+    // Implementación del método calcularPrecio
+    @Override
+    public double calcularPrecio() {
+        // Aplicar un descuento del 5% para ropa
+        return precio * 0.95;
+    }
+
+    // Implementación del método mostrarDetalles
+    @Override
+    public void mostrarDetalles() {
+        System.out.println("Producto Ropa: " + nombre);
+        System.out.println("Precio base: $" + precio);
+        System.out.println("Precio con descuento: $" + calcularPrecio());
+        System.out.println("Talla: " + talla);
+    }
+}
 public class Main {
     public static void main(String[] args) {
-        // Instanciación de objetos
-        Empleado empleado1 = new Empleado("Juan Perez", 30, 25000);
-        Gerente gerente1 = new Gerente("Ana Lopez", 28, 27000, "Ventas");
-        Desarrollador desarrollador1 = new Desarrollador("Misael Cordoba", 15, 37000, "Python");
+        // Crear objetos de las subclases
+        Producto electronico = new Electronico("Smartphone", 500.0, 12);
+        Producto alimento = new Alimento("Manzanas", 2.5, "2023-12-31");
+        Producto ropa = new Ropa("Camiseta", 20.0, "M");
 
-        // Llamada a métodos para empleado base
-        empleado1.mostrarInformacion();
-        empleado1.aumentarSalario(10);
+        // Demostrar polimorfismo
+        Producto[] productos = {electronico, alimento, ropa};
 
-        System.out.println("-----------------");
-
-        // Llamada a métodos para gerente
-        gerente1.mostrarInformacion();
-        gerente1.gestionarProyecto();
-        gerente1.aumentarSalario(15);
-
-        System.out.println("-----------------");
-
-        // Llamada a métodos para desarrollador
-        desarrollador1.mostrarInformacion();
-        desarrollador1.escribirCodigo();
-        desarrollador1.aumentarSalario(5);
+        for (Producto producto : productos) {
+            producto.mostrarDetalles(); // Llamada polimórfica
+            System.out.println("-----------------------------");
+        }
     }
 }
